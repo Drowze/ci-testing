@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dump github context
-        run:   echo "$GITHUB_CONTEXT" | tee context.json
+        run:   echo "$GITHUB_CONTEXT" | jq '.token = "***"' | tee context.json
         shell: bash
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -34,13 +34,13 @@ jobs:
       - name: Dump env
         run: env | tee github_env.env
 
-      - name: Upload github context
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts
-          path: |
-            context.json
-            github_env.env
+      # - name: Upload github context
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: artifacts
+      #     path: |
+      #       context.json
+      #       github_env.env
   build_no_cache:
     runs-on: ubuntu-latest
     steps:

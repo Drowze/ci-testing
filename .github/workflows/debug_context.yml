@@ -76,7 +76,7 @@ jobs:
       - name: Read outputs file
         run: cat "$GITHUB_OUTPUT"
       - name: Dump github context
-        run:   echo "$GITHUB_CONTEXT" | tee context.json
+        run:   echo "$GITHUB_CONTEXT" | jq '.token = "***"' | tee context.json
         shell: bash
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

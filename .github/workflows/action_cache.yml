@@ -67,11 +67,11 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
 
-      - name: Upload github context
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifacts
-          path: context.json
+      # - name: Upload github context
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: artifacts
+      #     path: context.json
 
       - name: Dump env
         run: env

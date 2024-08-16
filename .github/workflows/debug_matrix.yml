@@ -18,7 +18,9 @@ jobs:
     needs: [test_build_matrix]
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.test_build_matrix.outputs.matrix) }}
+      # matrix: ${{ fromJSON(needs.test_build_matrix.outputs.matrix) }}
+      matrix:
+        node: [0,1,2,3]
     if: ${{ strategy.job-index != 2 }}
     steps:
       - name: Dump github context

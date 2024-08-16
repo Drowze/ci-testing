@@ -1,9 +1,8 @@
 # Increase number to trigger CI -> 1
-name: The showdown
+name: Debug docker
 on:
-  push: {}
-  pull_request:
-    types: [ synchronize, labeled, opened, reopened ]
+  push:
+    paths: .github/workflows/debug_docker.yml
   workflow_dispatch:
     inputs:
       my_env:

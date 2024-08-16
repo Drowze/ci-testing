@@ -5,7 +5,32 @@ on:
   push:
     paths: .github/workflows/debug_apt.yml
 jobs:
-  test:
+  test_rgeo:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt install -y libgeos-dev libproj-dev proj-bin libzstd-dev
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          
+      - run: gem install rgeo
+        continue-on-error: true
+      - run: gem install rgeo-proj4
+        continue-on-error: true
+        
+      - run: sudo apt install -y libgeos-dev # libproj-dev proj-bin
+      - run: gem install rgeo
+        continue-on-error: true
+      - run: gem install rgeo-proj4
+        continue-on-error: true
+        
+      - run: sudo apt install -y libproj-dev #  proj-bin
+      - run: gem install rgeo
+        continue-on-error: true
+      - run: gem install rgeo-proj4
+        continue-on-error: true
+        
+      - run: sudo apt install -y proj-bin
+      - run: gem install rgeo
+        continue-on-error: true
+      - run: gem install rgeo-proj4
+        continue-on-error: true

@@ -16,7 +16,7 @@ jobs:
     needs: [test_build_matrix]
     strategy:
       fail-fast: false
-      matrix: ${{ needs.test_build_matrix.outputs.matrix }}
+      matrix: ${{ fromJSON(needs.test_build_matrix.outputs.matrix) }}
     steps:
       - name: Dump github context
         run: echo "$MATRIX_CONTEXT" | jq '.token = "***"' | tee github_context.json

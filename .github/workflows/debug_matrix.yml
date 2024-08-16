@@ -61,13 +61,14 @@ jobs:
         run: echo ${{ needs.*.result }}
       - name: Debug interpolation of needs.*.result (2)
         continue-on-error: true
-        run: echo ${{ needs.*.result }}
+        run: echo '${{ needs.*.result }}'
+      # raises invalid template error  
+      # - name: Debug interpolation of needs.*.result (3)
+      #   continue-on-error: true
+      #   run: echo "$NEEDS_RESULT_CONTEXT"
+      #   env:
+      #     NEEDS_RESULT_CONTEXT: ${{ needs.*.result }}
       - name: Debug interpolation of needs.*.result (3)
-        continue-on-error: true
-        run: echo "$NEEDS_RESULT_CONTEXT"
-        env:
-          NEEDS_RESULT_CONTEXT: ${{ needs.*.result }}
-      - name: Debug interpolation of needs.*.result (4)
         continue-on-error: true
         run: echo "$NEEDS_RESULT_CONTEXT"
         env:

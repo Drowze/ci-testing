@@ -1,0 +1,11 @@
+name: Debug apt
+run-name: Debug apt (${{ github.event_name }})
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_apt.yml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: apt install -y libgeos-dev libproj-dev proj-bin libzstd-dev

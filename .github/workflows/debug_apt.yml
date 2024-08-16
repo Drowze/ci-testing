@@ -11,7 +11,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-      - run: sudo apt install -y libproj-dev
+      - run: sudo apt install -qq -y --no-install-recommends libproj-dev
       - run: gem install rgeo rgeo-proj4
           
       # - run: gem install rgeo

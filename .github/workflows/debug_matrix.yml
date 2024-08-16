@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.test_build_matrix.outputs.matrix) }}
-    if: ${{ matrix.node != 'err' }}
+    if: ${{ strategy.job-index != 2 }}
     steps:
       - name: Dump github context
         run: echo "$MATRIX_CONTEXT" | jq '.token = "***"' | tee github_context.json

@@ -21,7 +21,7 @@ jobs:
       # matrix: ${{ fromJSON(needs.test_build_matrix.outputs.matrix) }}
       matrix:
         node: [0,1,2,3]
-    if: ${{ strategy.job-index != 2 }}
+    if: ${{ matrix.node != 2 }}
     steps:
       - name: Dump github context
         run: echo "$MATRIX_CONTEXT" | jq '.token = "***"' | tee github_context.json

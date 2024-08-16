@@ -97,3 +97,8 @@ jobs:
         run: echo "$NEEDS_RESULT_CONTEXT"
         env:
           NEEDS_RESULT_CONTEXT: ${{ join(needs.*.result) }}
+      - run: exit ${{ needs.test_matrix.result == 'success' && '0' || '1' }}
+
+# Conclusion: "needs.*.result" is always a one-sized array when needs is a single matrix of jobs
+# i.e.: in this case, `needs.test_matrix.result` is always the final result of the matrix of jobs,
+# as if it were a single job ("success", "failed", "cancelled", etc)

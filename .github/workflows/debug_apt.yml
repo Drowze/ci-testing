@@ -8,4 +8,4 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: apt install -y libgeos-dev libproj-dev proj-bin libzstd-dev
+      - run: sudo apt install -y libgeos-dev libproj-dev proj-bin libzstd-dev

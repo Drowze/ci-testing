@@ -1,6 +1,8 @@
-name: Test actions cache
+name: Debug cache
 on:
-  push: {}
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_cache.yml
 jobs:
   cache_prime_numbers:
     runs-on: ubuntu-latest
@@ -60,18 +62,3 @@ jobs:
   
       - name: Use Prime Numbers
         run: cat prime-numbers
-
-      - name: Dump github context
-        run:   echo "$GITHUB_CONTEXT" | jq '.token = "***"' | tee context.json
-        shell: bash
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-
-      # - name: Upload github context
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: artifacts
-      #     path: context.json
-
-      - name: Dump env
-        run: env

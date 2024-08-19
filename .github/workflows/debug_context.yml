@@ -66,6 +66,14 @@ jobs:
   build_no_cache:
     runs-on: ubuntu-latest
     steps:
+      - name: Testing event ref on PRs
+        run: |
+          echo event_name: ${{ github.event_name }}
+          echo github.event.ref: ${{ github.event.ref }}
+          echo default branch ref: ${{ format('refs/heads/{0}', github.repository.default_branch) }}
+          
+          echo event_name_is_push: ${{ github.event_name == 'push' }}
+          echo head_ref_is_default_branch: ${{ github.event.ref == format('refs/heads/{0}', github.repository.default_branch) }}
       - name: Set some output
         id: test-output
         run: echo "something=someone" >> "$GITHUB_OUTPUT"

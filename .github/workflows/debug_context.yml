@@ -66,23 +66,19 @@ jobs:
   build_no_cache:
     runs-on: ubuntu-latest
     steps:
-      - name: Testing event ref on PRs
-        run: |
-          echo event_name: ${{ github.event_name }}
-          echo github.event.ref: ${{ github.event.ref }}
-          echo default branch ref: ${{ format('refs/heads/{0}', github.event.repository.default_branch) }}
-          
-          echo event_name_is_push: ${{ github.event_name == 'push' }}
-          echo head_ref_is_default_branch: ${{ github.event.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
       - name: Set some output
         id: test-output
         run: echo "something=someone" >> "$GITHUB_OUTPUT"
       - name: Set some other output
         run: echo "konata=izumi" >> "$GITHUB_OUTPUT"
-      - name: Read step summary
-        run: cat "$GITHUB_STEP_SUMMARY"
-      - name: Read outputs file
-        run: cat "$GITHUB_OUTPUT"
+      - name: Write to step summary
+        run: |
+          echo "foobar" >> "$GITHUB_STEP_SUMMARY"
+      - name: Read step files
+        run: |
+          # proving these are scoped by each step
+          cat "$GITHUB_STEP_SUMMARY" 
+          cat "$GITHUB_OUTPUT" 
         
       - name: Dump github context
         run: |
@@ -108,7 +104,7 @@ jobs:
             console.log('context:', context)
 
             const fs = require('fs')
-            fs.writeFile(`${GITHUB_WORKSPACE}/js-context.json`, JSON.stringify(context), err => {
+            fs.writeFile(`${process.env.GITHUB_WORKSPACE}/js-context.json`, JSON.stringify(context), err => {
               if (err) {
                 console.error(err);
               } else {

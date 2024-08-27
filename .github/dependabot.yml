@@ -1,0 +1,30 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "bundler"
+    directory: "gemfiles/test_1/"
+    insecure-external-code-execution: allow
+    versioning-strategy: lockfile-only # only update Gemfile.lock
+    schedule:
+      # By default, this is on Monday
+      interval: "weekly"
+    commit-message:
+      prefix: "[Dependabot]"
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - dependencies
+      - ruby
+    groups:
+      karafka:
+        patterns:
+          - "karafka*"
+          - "waterdrop"
+        update-types: [patch] # karafka minor versions include breaking changes
+      internal-libraries:
+        patterns:
+          - "yabeda-karafka-2"
+        exclude-patterns:
+          - "karafka*"
+          - "waterdrop"
+        update-types: [minor, patch]

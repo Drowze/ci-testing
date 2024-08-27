@@ -54,12 +54,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  karafka (= 2.4.3)
-  karafka-core (= 2.4.3)
-  karafka-rdkafka (= 0.16.0)
-  karafka-testing (= 2.4.6)
-  waterdrop (= 2.7.3)
-  yabeda-karafka-2 (< 0.12.0)
+  karafka
+  karafka-core
+  karafka-rdkafka
+  karafka-testing
+  waterdrop
+  yabeda-karafka-2
 
 BUNDLED WITH
    2.5.11

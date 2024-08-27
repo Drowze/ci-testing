@@ -4,7 +4,4 @@ source 'https://rubygems.org'
 
 gem 'yabeda-karafka-2'
 gem 'karafka'
-gem 'karafka-core'
-gem 'karafka-rdkafka'
 gem 'karafka-testing'
-gem 'waterdrop'

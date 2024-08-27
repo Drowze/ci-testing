@@ -1,3 +1,3 @@
-# github-actions-docker-layer-caching-poc
+# ci-testing
 
-Some analysis to find out what approach of caching Docker builds leads to most performance gain.
+Various tests regarding CI (mostly around dependabot & GitHub actions)

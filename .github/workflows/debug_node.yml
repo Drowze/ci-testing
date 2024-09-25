@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: 18.x
           cache: npm
-          cache-dependency-path: .github/workflows/debug_node.yml
+          cache-dependency-path: '**/.github/workflows/debug_node.yml'
       - run: node --version
       - run: npm --version
       # using npx

@@ -27,11 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - id: get-path
+        uses: ci-testing/action-hello-composite@master
       - uses: actions/setup-node@v4
         with:
           node-version: 18.x
           cache: npm
-          cache-dependency-path: 'github/workflows/../**/*.yml'
+          cache-dependency-path: '${{ steps.get-path.outputs.actions-path }}/**/*.yml'
       - run: node --version
       - run: npm --version
       # using npx

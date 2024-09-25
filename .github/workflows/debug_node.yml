@@ -26,7 +26,7 @@ jobs:
   debug_node_cache:
     runs-on: ubuntu-latest
     steps:
-      - uses:  actions/setup-node@v4
+      - uses:  actions/setup-node@v2
         with:
           node-version: 18.x
           cache: npm

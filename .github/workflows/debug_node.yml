@@ -1,0 +1,16 @@
+name: Debug node
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_node.yml
+jobs:
+  debug_node:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm install -g @datadog/datadog-ci
+      - run: node --version
+      - run: npm --version
+      - run: |
+          DATADOG_API_KEY=abc123 DATADOG_SITE=datadoghq.com datadog-ci trace \
+            --name "Greet" -- \
+            echo "Hello World"

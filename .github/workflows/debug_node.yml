@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: get-path
-        uses: ci-testing/action-hello-composite@master
+        uses: Drowze/ci-testing/action-hello-composite@master
       - uses: actions/setup-node@v4
         with:
           node-version: 18.x

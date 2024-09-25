@@ -4,33 +4,34 @@ on:
   push:
     paths: .github/workflows/debug_node.yml
 jobs:
-  # debug_node:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: npm install -g @datadog/datadog-ci
-  #     - run: node --version
-  #     - run: npm --version
-  #     - run: |
-  #         DATADOG_API_KEY=abc123 DATADOG_SITE=datadoghq.com datadog-ci trace \
-  #           --name "Greet" -- \
-  #           echo "Hello World"
-  # debug_npx:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: node --version
-  #     - run: npm --version
-  #     - run: |
-  #         DATADOG_API_KEY=abc123 DATADOG_SITE=datadoghq.com npx @datadog/datadog-ci trace \
-  #           --name "Greet" -- \
-  #           echo "Hello World"
+  debug_node:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm install -g @datadog/datadog-ci
+      - run: node --version
+      - run: npm --version
+      - run: |
+          DATADOG_API_KEY=abc123 DATADOG_SITE=datadoghq.com datadog-ci trace \
+            --name "Greet" -- \
+            echo "Hello World"
+  debug_npx:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node --version
+      - run: npm --version
+      - run: |
+          DATADOG_API_KEY=abc123 DATADOG_SITE=datadoghq.com npx @datadog/datadog-ci trace \
+            --name "Greet" -- \
+            echo "Hello World"
   debug_node_cache:
     runs-on: ubuntu-latest
     steps:
-      - uses:  actions/setup-node@v2
+      - uses: actions/checkout
+      - uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: 18.x
           cache: npm
-          cache-dependency-path: '**/.github/workflows/*.yml'
+          cache-dependency-path: .github/workflows/debug_node.yml
       - run: node --version
       - run: npm --version
       # using npx

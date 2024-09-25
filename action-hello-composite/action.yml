@@ -11,5 +11,5 @@ runs:
     - id: get-path
       shell: bash
       run: |
-        path="$(realpath ${{ github.action_path }}/..)"
+        path="$(realpath .)"
         echo "path=${path}" >> ${GITHUB_OUTPUT}

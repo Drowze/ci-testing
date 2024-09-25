@@ -29,9 +29,6 @@ jobs:
       - uses: actions/checkout@v4
       - id: get-path
         uses: Drowze/ci-testing/action-hello-composite@master
-      - run: find /home/runner/work/_actions/Drowze/ci-testing/master/action-hello-composite/
-      - run: find /home/runner/work/_actions/Drowze/ci-testing/master/
-      - run: find /home/runner/work/_actions/Drowze/ci-testing/
       - uses: actions/setup-node@v4
         with:
           node-version: 18.x

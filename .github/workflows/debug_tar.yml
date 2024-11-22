@@ -1,0 +1,37 @@
+name: Debug tar
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_tar.yml
+env:
+  GH_TOKEN: ${{ github.token }}
+jobs:
+  debug_tar:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          tar --version
+          tar --help
+          tree --version
+          tree --help
+          gh --version
+          gh --help
+      - run: gh release download -R swagger-api/swagger-ui -A tar.gz -O - | tar -tzf - --wildcards 'swagger-ui-*/dist/' --exclude '*swagger-ui-react*' | grep react
+        continue-on-error: true
+      # - run: gh release download -R swagger-api/swagger-ui -A tar.gz -O - | tar -tzf - --wildcards 'swagger-ui-*/dist/' --exclude '*swagger-ui-react/dist/' | grep react
+      #   continue-on-error: true
+      # - run: gh release download -R swagger-api/swagger-ui -A tar.gz -O - | tar -tzf - --wildcards 'swagger-ui-*/dist/' --exclude 'swagger-ui-react/dist/' | grep react
+      #   continue-on-error: true
+      - run: gh release download -R swagger-api/swagger-ui -A tar.gz -O - | tar -tzf - --wildcards 'swagger-ui-*/dist/' --exclude 'swagger-ui-react/dist*' | grep react
+        continue-on-error: true
+      - run: gh release download -R swagger-api/swagger-ui -A tar.gz -O - | tar -tzf - --wildcards --anchored --no-wildcards-match-slash 'swagger-ui-*/dist/'
+        continue-on-error: true
+      - run: gh release download -R swagger-api/swagger-ui -A tar.gz -O - | tar -tzf - --wildcards --no-wildcards-match-slash 'swagger-ui-*/dist/'
+        continue-on-error: true
+      - run: |
+          mkdir -p _site/swagger-ui
+          gh release download -R swagger-api/swagger-ui -A tar.gz -O - \
+            | tar -xzf - -C _site/swagger-ui/ --strip-components=2 --wildcards --no-wildcards-match-slash 'swagger-ui-*/dist/'
+          tree -a _site

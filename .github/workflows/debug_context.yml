@@ -5,6 +5,11 @@ on:
   pull_request: {}
   workflow_call:
     inputs:
+      is_workflow_call:
+        description: Internal parameter
+        required: false
+        type: boolean
+        default: true
       environment:
         description: Target environment
         required: true
@@ -63,7 +68,14 @@ on:
   issue_comment:
     types: [created]
 jobs:
-  build_no_cache:
+  debug_token:
+    runs-on: ubuntu-latest
+    if: inputs.is_workflow_call
+    steps:
+      - run: gh release download -R swagger-api/swagger-ui -A tar.gz
+        env:
+          GH_TOKEN: ${{ github.token }}
+  debug_context:
     runs-on: ubuntu-latest
     steps:
       - name: Set some output
@@ -82,8 +94,8 @@ jobs:
         
       - name: Dump github context
         run: |
-          echo "$GITHUB_CONTEXT" | jq '.token = "***"' > context.json
-          echo "$GITHUB_CONTEXT" | jq -C '.token = "***"'
+          echo "$GITHUB_CONTEXT" | jq '.token = (.token[0:5] + " ...")' > context.json
+          echo "$GITHUB_CONTEXT" | jq -C '.token = (.token[0:5] + " ...")'
         shell: bash
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

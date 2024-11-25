@@ -1,0 +1,52 @@
+name: Debug multiline output
+run-name: Debug multiline output (${{ github.event_name }})
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_multiline_output.yml
+jobs:
+  test_multiline_output:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cat << EOF > tickets.txt
+          OK-1234
+          OK-4321
+          OK-1111
+          EOF
+      - id: set-output-1
+        run: |
+          tickets="$(cat tickets.txt)"
+
+          tickets_sanitized="$(echo "$tickets" | perl -pe 's/%/%25/g;s/\n/%0A/g;s/\r/%0D/g')"
+          echo "test-output=${tickets_sanitized}" >> $GITHUB_OUTPUT
+      - id: set-output-2
+        run: |
+          tickets="$(cat tickets.txt)"
+
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          printf "%s\n%s\n%s" "test-output<<${EOF}" "${tickets}" "${EOF}" >> "${GITHUB_OUTPUT}"
+      - id: set-output-3
+        run: |
+          tickets="$(cat tickets.txt)"
+
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          cat <<OUTPUT >> "${GITHUB_OUTPUT}"
+          test-output<<${EOF}
+          ${tickets}
+          ${EOF}
+          OUTPUT
+      - id: empty-output
+        run: |
+          tickets="$(echo "")"
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          cat <<OUTPUT >> "${GITHUB_OUTPUT}"
+          test-output<<${EOF}
+          ${tickets}
+          ${EOF}
+          OUTPUT
+      - run: echo '${{ steps.set-output-1.outputs.test-output }}'
+      - run: echo '${{ steps.set-output-2.outputs.test-output }}'
+      - run: echo '${{ steps.set-output-3.outputs.test-output }}'
+      - run: echo '${{ steps.empty-output.outputs.test-output }}'
+        if: steps.empty-output.outputs.test-output

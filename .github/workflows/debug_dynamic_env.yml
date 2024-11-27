@@ -1,0 +1,29 @@
+name: Debug dynamic env
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/debug_dynamic_env.yml
+jobs:
+  debug_dynamic_env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-envs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs')
+            fs.readFile('debug-env', 'utf8', (err, data) => {
+              if (err) {
+                console.error(err);
+                return;
+              }
+              console.log(data)
+
+              console.log(process.versions)
+              console.log(util)
+              console.log(util.parseEnv)
+              console.log(util.parseEnv(data))
+            })
+

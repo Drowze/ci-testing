@@ -1,6 +1,10 @@
 ---
 name: Hello world
 description: Hello world description
+inputs:
+  bool-input:
+    description: Some input
+    required: true
 outputs:
   actions-path:
     description: Actions repo root full path
@@ -8,8 +12,17 @@ outputs:
 runs:
   using: composite
   steps:
-    - id: get-path
-      shell: bash
+    - shell: bash
       run: |
-        path="$(realpath .)"
-        echo "path=${path}" >> ${GITHUB_OUTPUT}
+        : bool-input=${{ inputs.bool-input }}
+    - shell: bash
+      if: inputs.bool-input
+      run: |
+        : truthy
+    - shell: bash
+      if: ${{ !inputs.bool-input }}
+      run: |
+        : falsey
+    - shell: bash
+      run: |
+        : ${{ inputs.bool-input && 'truthy' || 'falsey' }}

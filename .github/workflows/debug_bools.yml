@@ -1,0 +1,44 @@
+name: Debug bools
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/debug_bools.yml
+      - action-hello-composite/action.yml
+jobs:
+  debug_vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Truthy tests!
+        run: |
+          : Is '' truthy? ${{ '' && 'yes' || 'no' }}
+          : Is 'false' truthy? ${{ 'false' && 'yes' || 'no' }}
+          : Is '0' truthy? ${{ '0' && 'yes' || 'no' }}
+          : Is 'null' truthy? ${{ 'null' && 'yes' || 'no' }}
+          : Is 'undefined' truthy? ${{ 'undefined' && 'yes' || 'no' }}
+          : Is 'NaN' truthy? ${{ 'NaN' && 'yes' || 'no' }}
+          : Is 'true' truthy? ${{ 'true' && 'yes' || 'no' }}
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: ''
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: false
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: 0
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: null
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: 'null'
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: undefined
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: NaN
+      - uses: Drowze/ci-testing/action-hello-composite@master
+        with:
+          bool-input: true

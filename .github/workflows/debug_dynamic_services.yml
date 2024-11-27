@@ -1,0 +1,33 @@
+name: Debug dynamic services
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/debug_dynamic_services.yml
+jobs:
+  get_services_json:
+    runs-on: ubuntu-latest
+    outputs:
+      services-json: ${{ steps.get-services.outputs.services-json }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-services
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64) 
+          echo "services-json<<${EOF}" >> "$GITHUB_OUTPUT"
+          cat debug-services.json >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
+
+  debugging:
+    runs-on: ubuntu-latest
+    needs: [get_services_json]
+    steps:
+      - run: echo '${{ needs.get_services_json.outputs.services-json }}'
+      - run: echo '${{ fromJson(needs.get_services_json.outputs.services-json) }}'
+
+  dynamic_services:
+    runs-on: ubuntu-latest
+    needs: [get_services_json]
+    services: ${{ fromJson(needs.get_services_json.outputs.services-json) }}
+    steps:
+      - run: echo "Hey brothers"

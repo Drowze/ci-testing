@@ -1,0 +1,13 @@
+{
+  "postgres": {
+    "image": "cimg/postgres:14.8",
+    "ports": ["5432:5432"],
+    "env": {
+      "POSTGRES_PASSWORD": "password"
+    }
+  },
+  "redis": {
+    "image": "redis:6.0.5",
+    "ports": ["6379:6379"]
+  }
+}

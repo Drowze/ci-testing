@@ -1,0 +1,36 @@
+name: Debug create pr
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/debug_create_pr.yml
+jobs:
+  debug_create_pr:
+    permissions:
+      pull-requests: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Create pull request
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ format('{0}+{1}@users.noreply.github.com', github.actor_id, github.actor) }}
+          str="$(dd if=/dev/urandom bs=15 count=1 status=none | sha256sum | head -c 6)"
+          branch="debug-create-pr-${str}"
+          git switch --create "$branch"
+          echo "$str" >> README.md
+          git commit -am "Debug create PR ${str}"
+          git push origin ${branch}
+          created_pr_result="$(gh pr create --base master --head "${branch}" --title "[${str}] Debug create PR" --body 'Debugging creating PR' --draft 2>&1 | tail -n1)"
+          pr_already_exist_result="$(gh pr create --base master --head "${branch}" --title "[${str}] Debug create PR" --body 'Debugging creating PR' --draft 2>&1 | tail -n1)"
+          echo "---- created_pr_result: ----"
+          echo "$created_pr_result"
+          echo "---------------------------"
+          echo "- pr_already_exist_result -"
+          echo "$created_pr_result"
+          echo "---------------------------"
+        env:
+          GH_TOKEN: ${{ github.token }}

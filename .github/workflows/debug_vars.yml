@@ -1,0 +1,16 @@
+name: Debug vars
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_vars.yml
+env:
+  ACTION_CHECKOUT_VERSION_ENV: ${{ vars.ACTION_CHECKOUT_VERSION }}
+jobs:
+  debug_vars:
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@${{ vars.ACTION_CHECKOUT_VERSION }}
+      - uses: actions/checkout@${{ env.ACTION_CHECKOUT_VERSION }}
+
+# Invalid workflow file: .github/workflows/debug_vars.yml#L12
+# The workflow is not valid. .github/workflows/debug_vars.yml (Line: 12, Col: 15): Unrecognized named-value: 'vars'. Located at position 1 within expression: vars.ACTION_CHECKOUT_VERSION .github/workflows/debug_vars.yml (Line: 13, Col: 15): Unrecognized named-value: 'env'. Located at position 1 within expression: env.ACTION_CHECKOUT_VERSION

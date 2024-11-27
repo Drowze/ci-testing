@@ -1,0 +1,36 @@
+name: Debug create pr
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/debug_create_pr.yml
+jobs:
+  debug_create_pr:
+    permissions:
+      pull-requests: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Create pull request
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ format('{0}+{1}@users.noreply.github.com', github.actor_id, github.actor) }}
+          str="$(dd if=/dev/urandom bs=15 count=1 status=none | sha256sum | head -c 6)"
+          branch="debug-create-pr-${str}"
+          git log -n10
+          echo "switching ..."
+          git switch --create "$branch" --track
+          echo "$str" >> README.md
+          git commit -am "Debug create PR ${str}"
+          gh --version
+          git remote -v
+          git log -n10
+          git status
+          git branch
+          git push origin ${branch}
+          gh pr create --base master --head "${branch}" --title "[${str}] Debug create PR" --body 'Debugging creating PR' --draft
+        env:
+          GH_TOKEN: ${{ github.token }}

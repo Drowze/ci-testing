@@ -42,3 +42,9 @@ jobs:
       - uses: Drowze/ci-testing/action-hello-composite@master
         with:
           bool-input: true
+      - run: |
+          echo "hello world 0"
+          my_var="$(false | echo)"
+          echo "hello world 1"
+          false
+          echo "hello world 2"

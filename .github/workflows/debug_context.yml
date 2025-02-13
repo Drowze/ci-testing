@@ -29,6 +29,11 @@ on:
         required: true
         default: foobar
         type: string
+      run:
+        description: Arbitrary command to run
+        default: 'true'
+        type: string
+        required: true
   workflow_dispatch:
     inputs:
       environment:
@@ -49,7 +54,13 @@ on:
         required: true
         default: foobar
         type: string
-
+      run:
+        description: Arbitrary command to run
+        type: choice
+        required: true
+        options:
+          - 'true'
+          - 'false'
   schedule:
     - cron: "0 0 */30 * *"
   check_run:
@@ -78,6 +89,10 @@ jobs:
   debug_context:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug arbirary command
+        run: |
+          : arbitrary command to run
+          ${{ inputs.run }}
       - name: Set some output
         id: test-output
         run: echo "something=someone" >> "$GITHUB_OUTPUT"

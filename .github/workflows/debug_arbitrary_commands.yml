@@ -1,0 +1,25 @@
+---
+name: Debug arbitrary commands
+on:
+  push:
+    paths: .github/workflows/debug_arbitrary_commands.yml
+jobs:
+  debug_other_workflow:
+    uses: ./.github/workflows/debug_context.yml
+    with:
+      environment: ${{ github.event.inputs.my_env }}
+      noop: false
+      arbitrary: whatever
+      other_param: 'fooooo'
+      run: |
+        env
+        echo "Hello world"
+  debug_other_composite_action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Drowze/ci-testing/action-arbitrary-run-command@master
+        with:
+          run: |
+            env
+            echo "Hello world"

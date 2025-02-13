@@ -1,0 +1,15 @@
+---
+name: Hello world
+description: Hello world description
+inputs:
+  run:
+    description: Arbitrary command to run
+    default: 'true'
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        : arbitrary command to run
+        ${{ inputs.run }}
+

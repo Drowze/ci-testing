@@ -14,33 +14,25 @@ jobs:
         shell: bash
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-          
+
+      - name: Dump runner context
+        run: echo "$RUNNER_CONTEXT"
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+
       - name: Dump github event
         run: |
           cat "$GITHUB_EVENT_PATH" > event.json
           cat "$GITHUB_EVENT_PATH" | jq -C
 
+      - run: |
+          # ${{ 'oi' == 'oi' && 'test ok' || 'test fail' }}
+          # ${{ 'oi' == 'foo' && 'test fail' || 'test ok' }}
+          # ${{ 'oi' == 'foo' && 'test fail' }}
+          echo "hello"
+
       - name: Dump env
         run: env | tee github_env.env
-
-      - run: apt update -y
-      - run: >-
-          apt install -y
-          cowsay
-          $( [[ "$RUNNER_ARCH" =~ "ARM64" ]] && "tree" || "" )
-
-      - run: |
-          echo "$RUNNER_ARCH"
-          echo "${{ env.RUNNER_ARCH }}"
-          echo "${{ env['RUNNER_ARCH'] }}"
-          echo "RUNNER_ARCH=$RUNNER_ARCH" >> "$GITHUB_ENV"
-          echo "$RUNNER_ARCH"
-          echo "${{ env.RUNNER_ARCH }}"
-          echo "${{ env['RUNNER_ARCH'] }}"
-      - run: |
-          echo "$RUNNER_ARCH"
-          echo "${{ env.RUNNER_ARCH }}"
-          echo "${{ env['RUNNER_ARCH'] }}"
 
       - name: Dump github context (javascript)
         uses: actions/github-script@v7

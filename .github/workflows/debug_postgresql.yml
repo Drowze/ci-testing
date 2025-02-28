@@ -1,0 +1,18 @@
+name: Debug postgresql
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_postgresql.yml
+jobs:
+  debug_postgresql:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sudo systemctl start postgresql.service
+          sudo ls /etc/postgresql
+          sudo ls /etc/postgresql/*/main
+          sudo cat /etc/postgresql/*/main/pg_hba.conf
+      - run: |
+          sudo gem install pg
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'somepass'"
+          ruby -rpg -e 'puts PG.connect(user: "postgres", password: "somepass").exec("SELECT 'ok' AS test").to_a'

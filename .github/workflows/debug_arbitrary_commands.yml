@@ -27,4 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          ruby -e '$stderr.puts "something went wrong!!!"; exit 1'
+          ruby -e '$stderr.puts "something went wrong\nlololo\nmultiline!!!!"; exit 1' 2> $RUNNER_TEMP/stderr.out || error_code="$?"
+          if [ -n "$error_code" ]; then
+            error="$(cat $RUNNER_TEMP/stderr.out)"
+            echo "opa 1"
+            echo "::error title=Script failed::${error}"
+            echo "opa 2"
+            echo exit "$error_code"
+            exit "$error_code"
+          fi

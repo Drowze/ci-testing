@@ -26,13 +26,20 @@ jobs:
   debug_stderr:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          ruby -e '$stderr.puts "something went wrong\nlololo\nmultiline!!!!"; exit 1' 2> $RUNNER_TEMP/stderr.out || error_code="$?"
-          if [ -n "$error_code" ]; then
-            error="$(cat $RUNNER_TEMP/stderr.out)"
-            echo "opa 1"
-            echo "::error title=Script failed::${error}"
-            echo "opa 2"
-            echo exit "$error_code"
-            exit "$error_code"
-          fi
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            let exitCode
+            let stdout
+            let stderr
+            let {
+              exitCode,
+              stdout,
+              stderr
+            } = await exec.getExecOutput('ruby', ['-e', '$stderr.puts "something went wrong\nlololol\nmultiline!!!" ; exit 3']);
+            if(exitCode != 0) {
+              core.error(stderr)
+              exit exitCode
+            } else {
+              console.info("exec was successful")
+            }

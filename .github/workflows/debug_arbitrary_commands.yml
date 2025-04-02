@@ -23,3 +23,8 @@ jobs:
           run: |
             env
             echo "Hello world"
+  debug_stderr:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          ruby -e '$stderr.puts "something went wrong!!!"; exit 1'

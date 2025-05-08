@@ -1,7 +1,11 @@
 name: Dump env/context
 run-name: Dump (${{ github.event_name }})
 on:
-  push: {}
+  push:
+    tags:
+    - dev-*
+    - stage-*
+    - prod-*
   pull_request: {}
   workflow_call:
     inputs:

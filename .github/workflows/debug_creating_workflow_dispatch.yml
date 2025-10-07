@@ -1,0 +1,14 @@
+name: Debug workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/debug_creating_workflow_dispatch.yml
+env:
+  GH_TOKEN: ${{ github.token }}
+jobs:
+  build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh workflow run debug_tar.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"

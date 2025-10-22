@@ -11,4 +11,4 @@ jobs:
       actions: write
     runs-on: ubuntu-latest
     steps:
-      - run: gh workflow run debug_tar.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
+      - run: gh workflow run debug_context.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f arbitrary=some-string

@@ -96,6 +96,8 @@ jobs:
         run: |
           : arbitrary command to run
           ${{ inputs.run }}
+      - name: Original actor of this workflow
+        run: echo '${{ inputs.arbitrary || github.actor }}'
       - name: Set some output
         id: test-output
         run: echo "something=someone" >> "$GITHUB_OUTPUT"

@@ -20,10 +20,9 @@ on:
         required: true
         default: false
         type: boolean
-      arbitrary:
-        description: Arbitrary string
-        required: true
-        default: foobar
+      original-actor:
+        description: Original actor of the workflow run
+        required: false
         type: string
       other_param:
         description: Some param exclusive to workflow_call
@@ -51,10 +50,9 @@ on:
         required: true
         default: false
         type: boolean
-      arbitrary:
-        description: Arbitrary string
-        required: true
-        default: foobar
+      original-actor:
+        description: Original actor of the workflow run
+        required: false
         type: string
       run:
         description: Arbitrary command to run
@@ -97,7 +95,9 @@ jobs:
           : arbitrary command to run
           ${{ inputs.run }}
       - name: Original actor of this workflow
-        run: echo '${{ inputs.arbitrary || github.actor }}'
+        run: echo "$ORIGINAL_ACTOR"
+        env:
+          ORIGINAL_ACTOR: ${{ endsWith(github.actor, '[bot]') && inputs.original-actor || github.actor }}
       - name: Set some output
         id: test-output
         run: echo "something=someone" >> "$GITHUB_OUTPUT"

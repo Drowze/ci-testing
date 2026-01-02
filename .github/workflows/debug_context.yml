@@ -62,8 +62,9 @@ on:
         options:
           - 'true'
           - 'false'
-  schedule:
-    - cron: "0 0 */30 * *"
+  # commented out, so the workflow doesn't get auto-disabled by github
+  # schedule:
+  #   - cron: "0 0 */30 * *"
   check_run:
     types:
       - created

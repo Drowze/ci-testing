@@ -170,6 +170,10 @@ jobs:
           echo default_branch: ${{ github.event.repository.default_branch }}
           echo format: ${{ format('refs/heads/{0}', github.event.repository.default_branch) }}
 
-      - name: Conditionally on push
-        if: github.event_name == 'push' && github.event.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-        run: echo ran!
+
+  debug_job:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.event.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    steps:
+    - name: Conditionally on push
+      run: echo ran!

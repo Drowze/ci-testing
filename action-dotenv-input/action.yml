@@ -1,0 +1,25 @@
+---
+name: Action dotenv input
+description: An action taking a dotenv-formatted input and using as an input for 'env:' in a later step
+inputs:
+  with_env:
+    description: Dotenv-formatted string
+    required: true
+outputs:
+  with_env_json:
+    description: The 'with_env' input parsed as formatted as JSON
+    value: ${{ steps.parse-with-env.outputs.with_env_json }}
+runs:
+  using: composite
+  steps:
+    - name: Parse with_env
+      shell: bash
+      id: parse-with-env
+      run: |
+        with_env_json="$(echo "$WITH_ENV" | docker run --rm -i ruby:4-alpine /bin/sh -c '
+          gem install dotenv >/dev/null && ruby -rjson -rdotenv -e "puts Dotenv.parse(\"/dev/stdin\").to_json"
+        ')"
+        echo "with_env_json=$with_env_json" > "$GITHUB_OUTPUT"
+      env:
+        WITH_ENV: |
+          ${{ inputs.with_env }}

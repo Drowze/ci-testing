@@ -1,0 +1,22 @@
+name: Debug dotenv
+run-name: Debug dotenv (${{ github.event_name }})
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/debug_dotenv_parsing.yml
+jobs:
+  test_dotenv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./action-dotenv-input
+        id: dotenv
+        with:
+          with_env: |
+            FOO=foo
+            BAR=bar
+      - run: |
+          echo "FOO=$FOO"
+          echo "BAR=$BAR"
+        env: ${{ fromJson(steps.dotenv.outputs.with_env_json) }}

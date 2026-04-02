@@ -16,7 +16,11 @@ jobs:
           with_env: |
             FOO=foo
             BAR=bar
+            SPACES="var with spaces"
+            QUAZ=quaz
       - run: |
           echo "FOO=$FOO"
           echo "BAR=$BAR"
+          echo "QUAZ=$QUAZ"
+          echo "SPACES=$SPACES"
         env: ${{ fromJson(steps.dotenv.outputs.with_env_json) }}

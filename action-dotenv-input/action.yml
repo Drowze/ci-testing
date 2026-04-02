@@ -12,14 +12,30 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Parse with_env
+    # - name: Parse with_env
+    #   shell: bash
+    #   id: parse-with-env
+    #   run: |
+    #     with_env_json="$(echo "$WITH_ENV" | docker run --rm -i ruby:4-alpine /bin/sh -c '
+    #       gem install dotenv >/dev/null && ruby -rjson -rdotenv -e "puts Dotenv.parse(\"/dev/stdin\").to_json"
+    #     ')"
+    #     echo "with_env_json=$with_env_json" > "$GITHUB_OUTPUT"
+    #   env:
+    #     WITH_ENV: |
+    #       ${{ inputs.with_env }}
+
+    - name: Parse with_env (using npx)
       shell: bash
       id: parse-with-env
       run: |
-        with_env_json="$(echo "$WITH_ENV" | docker run --rm -i ruby:4-alpine /bin/sh -c '
-          gem install dotenv >/dev/null && ruby -rjson -rdotenv -e "puts Dotenv.parse(\"/dev/stdin\").to_json"
-        ')"
-        echo "with_env_json=$with_env_json" > "$GITHUB_OUTPUT"
+        echo "$WITH_ENV" > ${{ runner.temp }}/.env.tmp
+        EOF="=$(dd if=/dev/urandom bs=15 count=1 2>/dev/null | base64)"
+        echo "with_env_json=<<$EOF" > "$GITHUB_OUTPUT"
+        npx @dotenvx/dotenvx@1.59.1 get -f "${{ runner.temp }}/.env.tmp" | awk '{print "with_env_json="$1}' >> "$GITHUB_OUTPUT"
+        echo "$EOF" >> "$GITHUB_OUTPUT"
+        echo "---"
+        cat "$GITHUB_OUTPUT"
+        echo "---"
       env:
         WITH_ENV: |
           ${{ inputs.with_env }}

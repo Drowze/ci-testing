@@ -1,0 +1,16 @@
+name: Debug path
+run-name: Debug path (${{ github.event_name }})
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/debug_path.yml
+jobs:
+  test_path:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pwd
+      - run: echo $HOME
+      - run: echo $PATH
+      - run: tree -a
+      - run: tree -a $HOME

@@ -112,6 +112,11 @@ jobs:
           # proving these are scoped by each step
           cat "$GITHUB_STEP_SUMMARY" 
           cat "$GITHUB_OUTPUT" 
+
+      - name: Dump secret names
+        run: echo "$SECRETS_JSON" | jq -C 'keys'
+        env:
+          SECRETS_JSON: ${{ toJson(secrets) }}
         
       - name: Dump github context
         run: |

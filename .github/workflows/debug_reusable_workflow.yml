@@ -18,7 +18,6 @@ jobs:
     with:
       environment: ${{ github.event.inputs.my_env }}
       noop: false
-      arbitrary: whatever
       other_param: 'fooooo'
       run: |
         env
